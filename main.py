@@ -19,15 +19,12 @@ def usa_visa_checker():
     privacy_check = driver.find_element(
         By.XPATH, '//*[@id="new_user"]/div[3]/label/div'
     )
-    # Clear input fields
-    user_email.clear()
-    user_password.clear()
     # Input to credential fields and logging in
     user_email.send_keys(email)
     user_password.send_keys(password)
     privacy_check.click()
     login_button.click()
-    time.sleep(5)
+    time.sleep(10)
     # Check for the next available dates
     continue_button = driver.find_element(By.LINK_TEXT, "Continue")
     continue_button.click()
