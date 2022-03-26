@@ -22,7 +22,7 @@ def send_sms(status_dict):
         f"Toronto : {status_dict.get('Toronto')} \n"
         f"And don't forget -> Who's the smartest? Dr. Mehak Khanna is the smartest, she's a genius. "
         "Also, don't forget to smile."
-        f"\n Random Motivational Quote : {motivation_quotes[random_number]} "
+        f"\nRandom Motivational Quote : {motivation_quotes[random_number]} "
     )
 
     sid = os.environ.get("twilio_sid")

@@ -4,13 +4,16 @@ from helpers import get_creds, send_sms
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
 
 def usa_visa_checker():
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
     messages_to_be_sent = {}
     no_appointment_id = "consulate_date_time_not_available"
     email, password, visa_url = get_creds()
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.get(visa_url)
     # Form fields
     user_email = driver.find_element(By.XPATH, '//*[@id="user_email"]')
@@ -103,7 +106,7 @@ def usa_visa_checker():
                 next_button.click()
                 time.sleep(1)
 
-    driver.close()
+    driver.quit()
     return messages_to_be_sent
 
 
