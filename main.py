@@ -38,7 +38,7 @@ def usa_visa_checker():
     user_password.send_keys(password)
     privacy_check.click()
     login_button.click()
-    time.sleep(10)
+    time.sleep(5)
     # Check for the next available dates
     continue_button = driver.find_element(By.LINK_TEXT, "Continue")
     continue_button.click()
@@ -47,12 +47,12 @@ def usa_visa_checker():
     time.sleep(3)
     reschedule_button = driver.find_elements(By.LINK_TEXT, "Reschedule Appointment")[1]
     reschedule_button.click()
-    time.sleep(5)
+    time.sleep(3)
     # Check if slots are open in Montreal region if not continue to Quebec City, if not, then to Toronto
     city_field = driver.find_element(
         By.XPATH, '//*[@id="appointments_consulate_appointment_facility_id"]'
     )
-    time.sleep(5)
+    time.sleep(3)
     # Check for slots in Montreal, if not, then try Quebec City
     city_field.send_keys("Montreal")
     time.sleep(2)
@@ -92,23 +92,26 @@ def usa_visa_checker():
             By.XPATH, '//*[@id="appointments_consulate_appointment_date_input"]'
         )
         date_dropper.click()
-        time.sleep(1)
+        time.sleep(2)
+        first_group = driver.find_element(
+            By.XPATH, '//*[@id="ui-datepicker-div"]/div[1]'
+        )
+        last_group = driver.find_element(
+            By.XPATH, '//*[@id="ui-datepicker-div"]/div[2]'
+        )
         while True:
-            first_group = driver.find_element(
-                By.XPATH, '//*[@id="ui-datepicker-div"]/div[1]'
-            )
-            last_group = driver.find_element(
-                By.XPATH, '//*[@id="ui-datepicker-div"]/div[2]'
-            )
+            # Check if date available in first group
+            # elements_under_first_group = first_group.find_elements(By.TAG_NAME, "<td>")
+            # elements_under_last_group = last_group.find_elements(By.TAG_NAME, "<td>")
             next_button = driver.find_element(
                 By.XPATH, '//*[@id="ui-datepicker-div"]/div[2]/div/a'
             )
-            # Check if date available in first group
-            elements_under_first_group = first_group.find_elements(By.TAG_NAME, "<td>")
-            elements_under_last_group = last_group.find_elements(By.TAG_NAME, "<td>")
-            all_elements = elements_under_first_group + elements_under_last_group
-            for element in all_elements:
-                element_class = element.get_attribute("class")
+            time.sleep(1)
+            date_elements = driver.find_elements(By.TAG_NAME, "td")
+            # all_elements = elements_under_first_group + elements_under_last_group
+            for element in date_elements:
+                element_class = element.get_dom_attribute("class")
+                print(f"Element class : {element_class}")
                 if element_class == "undefined":
                     messages_to_be_sent.update(
                         {
