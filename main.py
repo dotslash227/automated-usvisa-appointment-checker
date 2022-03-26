@@ -1,20 +1,9 @@
 import os
 import time
+from helpers import get_creds, send_sms
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-
-
-def get_creds():
-    url = os.environ.get("url_for_us")
-    email = os.environ.get("email_for_us")
-    password = os.environ.get("password_for_us")
-
-    return email, password, url
-
-
-def send_sms(messages):
-    pass
 
 
 def usa_visa_checker():
@@ -88,35 +77,36 @@ def usa_visa_checker():
         messages_to_be_sent.update({"Toronto": "Slots in Toronto have been closed"})
     else:
         next_counter = 0
+        flag = True
         date_dropper = driver.find_element(
             By.XPATH, '//*[@id="appointments_consulate_appointment_date_input"]'
         )
         date_dropper.click()
         time.sleep(2)
-        while True:
-            # Check if date available in first group
-            # elements_under_first_group = first_group.find_elements(By.TAG_NAME, "<td>")
-            # elements_under_last_group = last_group.find_elements(By.TAG_NAME, "<td>")
+        messages_to_be_sent.update({"Toronto": "No new dates available for Toronto :("})
+        while next_counter <= 15 and flag:
             next_button = driver.find_element(
                 By.XPATH, '//*[@id="ui-datepicker-div"]/div[2]/div/a'
             )
             time.sleep(1)
             date_elements = driver.find_elements(By.TAG_NAME, "td")
-            # all_elements = elements_under_first_group + elements_under_last_group
-            for element in date_elements:
-                element_class = element.get_attribute("class")
-                print(f"Element class : {element_class}")
-                if "ui-datepicker-unselectable" not in element_class:
-                    messages_to_be_sent.update(
-                        {
-                            "Toronto": "YAAAYYY! New Earlier slots have opened up in Toronto. "
-                            "CHECK THE WEBSITE NOW AND RESCHEDULE."
-                        }
-                    )
-                    break
-            next_counter += 1
-            next_button.click()
-            time.sleep(1)
+            data_handler_attributes = [
+                element.get_attribute("data-handler") for element in date_elements
+            ]
+            if any(data_handler_attributes):
+                print(f"Executing this block. Next counter : {next_counter}")
+                messages_to_be_sent.update(
+                    {
+                        "Toronto": "YAAYY!! An Earlier date is available for Toronto. HURRY UP!"
+                    }
+                )
+                flag = False
+                break
+            else:
+                next_counter += 1
+                print(f"Executing that block. Next counter : {next_counter}")
+                next_button.click()
+                time.sleep(1)
 
     print(f"Messages to be sent : {messages_to_be_sent}")
     time.sleep(3)
