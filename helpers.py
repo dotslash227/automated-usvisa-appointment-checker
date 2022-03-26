@@ -14,14 +14,13 @@ def get_creds():
 
 def send_sms(status_dict):
     random_number = random.randint(0, 4)
-    op_name = os.environ.get("op_name")
     message_to_be_sent = (
-        f"Bonjour {op_name} I am your automated US visa appointment checker and "
+        f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and "
         "here's the update for the most recent run. \n"
         f"Montreal : {status_dict.get('Montreal')} \n"
         f"Quebec City : {status_dict.get('Quebec City')} \n"
         f"Toronto : {status_dict.get('Toronto')} \n"
-        f"And don't forget -> Who's the smartest? {op_name} is the smartest, she's a genius. "
+        f"And don't forget -> Who's the smartest? Dr. Mehak Khanna is the smartest, she's a genius. "
         "Also, don't forget to smile."
         f"\n Random Motivational Quote : {motivation_quotes[random_number]} "
     )
