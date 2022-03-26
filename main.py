@@ -81,7 +81,7 @@ def usa_visa_checker():
         date_dropper.click()
         time.sleep(2)
         messages_to_be_sent.update({"Toronto": "No new dates available for Toronto :("})
-        while next_counter <= 15 and flag:
+        while next_counter <= 11 and flag:
             next_button = driver.find_element(
                 By.XPATH, '//*[@id="ui-datepicker-div"]/div[2]/div/a'
             )
@@ -91,7 +91,6 @@ def usa_visa_checker():
                 element.get_attribute("data-handler") for element in date_elements
             ]
             if any(data_handler_attributes):
-                print(f"Executing this block. Next counter : {next_counter}")
                 messages_to_be_sent.update(
                     {
                         "Toronto": "YAAYY!! An Earlier date is available for Toronto. HURRY UP!"
@@ -101,15 +100,17 @@ def usa_visa_checker():
                 break
             else:
                 next_counter += 1
-                print(f"Executing that block. Next counter : {next_counter}")
                 next_button.click()
                 time.sleep(1)
 
-    print(f"Messages to be sent : {messages_to_be_sent}")
-    time.sleep(3)
+    driver.close()
+    return messages_to_be_sent
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == "__main__":
     print("running the program ....")
-    usa_visa_checker()
+    messages = usa_visa_checker()
+    message_id = send_sms(messages)
+    print(f"SMS id is {message_id}")
+    time.sleep(2)

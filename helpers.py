@@ -1,5 +1,7 @@
 import os
-import vonage
+import random
+from motivations import motivation_quotes
+from twilio.rest import Client
 
 
 def get_creds():
@@ -10,21 +12,26 @@ def get_creds():
     return email, password, url
 
 
-def send_sms(messages):
-    api_key = os.environ.get("vonage_api_key")
-    secret = os.environ.get("vonage_secret_key")
-    client = vonage.Client(key=api_key, secret=secret)
-    sms = vonage.Sms(client)
-    response = sms.send_message(
-        {
-            "from": "Vonage APIs",
-            "to": "15147751622",
-            "text": "This is a test function call",
-        }
+def send_sms(status_dict):
+    random_number = random.randint(0, 4)
+    op_name = os.environ.get("op_name")
+    message_to_be_sent = (
+        f"Bonjour {op_name} I am your automated US visa appointment checker and "
+        "here's the update for the most recent run. \n"
+        f"Montreal : {status_dict.get('Montreal')} \n"
+        f"Quebec City : {status_dict.get('Quebec City')} \n"
+        f"Toronto : {status_dict.get('Toronto')} \n"
+        f"And don't forget -> Who's the smartest? {op_name} is the smartest, she's a genius. "
+        "Also, don't forget to smile."
+        f"\n Random Motivational Quote : {motivation_quotes[random_number]} "
     )
-    if response["messages"][0]["status"] == "0":
-        print("Message sent successfully.")
-        return True
-    else:
-        print(f"Message failed with error: {response['messages'][0]['error-text']}")
-        return False
+
+    sid = os.environ.get("twilio_sid")
+    auth = os.environ.get("twilio_auth")
+    from_number = os.environ.get("us_from_number")
+    to_number = os.environ.get("us_to_number")
+    client = Client(sid, auth)
+    message = client.messages.create(
+        body=message_to_be_sent, from_=from_number, to=to_number
+    )
+    return message.sid
