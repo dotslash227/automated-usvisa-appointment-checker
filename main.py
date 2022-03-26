@@ -93,12 +93,6 @@ def usa_visa_checker():
         )
         date_dropper.click()
         time.sleep(2)
-        first_group = driver.find_element(
-            By.XPATH, '//*[@id="ui-datepicker-div"]/div[1]'
-        )
-        last_group = driver.find_element(
-            By.XPATH, '//*[@id="ui-datepicker-div"]/div[2]'
-        )
         while True:
             # Check if date available in first group
             # elements_under_first_group = first_group.find_elements(By.TAG_NAME, "<td>")
@@ -110,12 +104,12 @@ def usa_visa_checker():
             date_elements = driver.find_elements(By.TAG_NAME, "td")
             # all_elements = elements_under_first_group + elements_under_last_group
             for element in date_elements:
-                element_class = element.get_dom_attribute("class")
+                element_class = element.get_attribute("class")
                 print(f"Element class : {element_class}")
-                if element_class == "undefined":
+                if "ui-datepicker-unselectable" not in element_class:
                     messages_to_be_sent.update(
                         {
-                            "Toronto": "YAAAYYY! New slots have opened up in Toronto. "
+                            "Toronto": "YAAAYYY! New Earlier slots have opened up in Toronto. "
                             "CHECK THE WEBSITE NOW AND RESCHEDULE."
                         }
                     )
@@ -123,26 +117,6 @@ def usa_visa_checker():
             next_counter += 1
             next_button.click()
             time.sleep(1)
-
-            # if not elements_under_first_group and not elements_under_last_group:
-            #     # Click on next and increase the next counter
-            #     next_counter += 1
-            #     next_button.click()
-            #     time.sleep(1.2)
-            #     if next_counter >= 10:
-            #         messages_to_be_sent.update(
-            #             {"Toronto": "No new slots available in Toronto"}
-            #         )
-            #         break
-            # else:
-            #     # Earlier date is available
-            #     messages_to_be_sent.update(
-            #         {
-            #             "Toronto": "YAAAYYY! New slots have opened up in Toronto. CHECK THE WEBSITE NOW
-            #             AND RESCHEDULE."
-            #         }
-            #     )
-            #     break
 
     print(f"Messages to be sent : {messages_to_be_sent}")
     time.sleep(3)
