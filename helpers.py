@@ -20,8 +20,8 @@ def send_sms(status_dict):
         f"Montreal : {status_dict.get('Montreal')} \n"
         f"Quebec City : {status_dict.get('Quebec City')} \n"
         f"Toronto : {status_dict.get('Toronto')} \n"
-        f"Never forget -> Who's the smartest? Dr. Mehak Khanna is the smartest, she's a genius."
-        "And don't forget to smile."
+        f"Who's the smartest? Dr. Mehak Khanna is the smartest, she's a genius."
+        "40% BTC, 40% ETH, 10% USDC, 10% SOL"
         f"\n{motivation_quotes[random_number]} "
     )
 
