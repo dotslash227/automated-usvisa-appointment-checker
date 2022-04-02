@@ -14,7 +14,7 @@ def get_creds():
 
 
 def send_sms(status_dict):
-    logger = logging.get_logger(__name__)
+    logger = logging.getLogger(__name__)
     random_number = random.randint(0, 4)
     message_to_be_sent = """Bonjour Dr. Mehak, I am your automated US visa appointment checker and here's the update for the most recent run. 
     Montreal : No new slots available in Montreal 
