@@ -14,14 +14,20 @@ def get_creds():
 
 def send_sms(status_dict):
     random_number = random.randint(0, 4)
-    message_to_be_sent = (
-        f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and "
-        "here's the update for the most recent run. \n"
-        f"Montreal : {status_dict.get('Montreal')} \n"
-        f"Quebec City : {status_dict.get('Quebec City')} \n"
-        f"Toronto : {status_dict.get('Toronto')} \n"
-        "40% BTC, 40% ETH, 10% USDC, 10% SOL"
-    )
+    message_to_be_sent = """Bonjour Dr. Mehak, I am your automated US visa appointment checker and here's the update for the most recent run. 
+    Montreal : No new slots available in Montreal 
+    Quebec City : No new slots available in Quebec City 
+    Toronto : No new dates available for Toronto :(
+    40% BTC, 40% ETH, 10% USDC, 10% SOL
+    """
+    # message_to_be_sent = (
+    #     f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and "
+    #     "here's the update for the most recent run. \n"
+    #     f"Montreal : {status_dict.get('Montreal')} \n"
+    #     f"Quebec City : {status_dict.get('Quebec City')} \n"
+    #     f"Toronto : {status_dict.get('Toronto')} \n"
+    #     "40% BTC, 40% ETH, 10% USDC, 10% SOL"
+    # )
 
     sid = os.environ.get("twilio_sid")
     auth = os.environ.get("twilio_auth")
@@ -32,3 +38,7 @@ def send_sms(status_dict):
         body=message_to_be_sent, from_=from_number, to=to_number
     )
     return message.sid
+
+
+if __name__ == "__main__":
+    send_sms({"dict": "dict"})
