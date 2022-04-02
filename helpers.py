@@ -2,6 +2,7 @@ import os
 import random
 from motivations import motivation_quotes
 from twilio.rest import Client
+import logging
 
 
 def get_creds():
@@ -13,6 +14,7 @@ def get_creds():
 
 
 def send_sms(status_dict):
+    logger = logging.get_logger(__name__)
     random_number = random.randint(0, 4)
     message_to_be_sent = """Bonjour Dr. Mehak, I am your automated US visa appointment checker and here's the update for the most recent run. 
     Montreal : No new slots available in Montreal 
@@ -37,6 +39,7 @@ def send_sms(status_dict):
     message = client.messages.create(
         body=message_to_be_sent, from_=from_number, to=to_number
     )
+    logger.info(f"SMS sent with SMS id: {message.sid}")
     return message.sid
 
 
