@@ -32,7 +32,7 @@ def login_to_url(driver):
 
 def usa_visa_checker():
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     ua = UserAgent(verify_ssl=False)
     user_agent = ua.random
     chrome_options.add_argument(f"user-agent={user_agent}")
@@ -108,7 +108,7 @@ def usa_visa_checker():
             messages_to_be_sent.update(
                 {"Toronto": "No new dates available for Toronto :("}
             )
-            while next_counter <= 11 and flag:
+            while next_counter <= 5 and flag:
                 next_button = driver.find_element(
                     By.XPATH, '//*[@id="ui-datepicker-div"]/div[2]/div/a'
                 )
