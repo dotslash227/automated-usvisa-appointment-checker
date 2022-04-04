@@ -1,8 +1,8 @@
 import os
-import random
-from motivations import motivation_quotes
 from twilio.rest import Client
 import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_creds():
@@ -14,22 +14,14 @@ def get_creds():
 
 
 def send_sms(status_dict):
-    logger = logging.getLogger(__name__)
-    random_number = random.randint(0, 4)
-    message_to_be_sent = """Bonjour Dr. Mehak, I am your automated US visa appointment checker and here's the update for the most recent run. 
-    Montreal : No new slots available in Montreal 
-    Quebec City : No new slots available in Quebec City 
-    Toronto : No new dates available for Toronto :(
-    40% BTC, 40% ETH, 10% USDC, 10% SOL
-    """
-    # message_to_be_sent = (
-    #     f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and "
-    #     "here's the update for the most recent run. \n"
-    #     f"Montreal : {status_dict.get('Montreal')} \n"
-    #     f"Quebec City : {status_dict.get('Quebec City')} \n"
-    #     f"Toronto : {status_dict.get('Toronto')} \n"
-    #     "40% BTC, 40% ETH, 10% USDC, 10% SOL"
-    # )
+    message_to_be_sent = (
+        f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and "
+        "here's the update for the most recent run. \n"
+        f"Montreal : {status_dict.get('Montreal')} \n"
+        f"Quebec City : {status_dict.get('Quebec City')} \n"
+        f"Toronto : {status_dict.get('Toronto')} \n"
+        "40% BTC, 40% ETH, 10% USDC, 10% SOL"
+    )
 
     sid = os.environ.get("twilio_sid")
     auth = os.environ.get("twilio_auth")
