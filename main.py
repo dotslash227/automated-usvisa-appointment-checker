@@ -1,22 +1,16 @@
-import os
 import time
-from helpers import get_creds, send_sms
+from helpers import get_creds
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from selenium_stealth import stealth
 from fake_useragent import UserAgent
-import undetected_chromedriver as uc
 
 
 def login_to_url(driver):
     email, password, visa_url = get_creds()
     driver.get(visa_url)
     # Form fields
-    html = driver.find_element_by_tag_name("html")
-    html.send_keys(Keys.END)
     time.sleep(2)
     user_email = driver.find_element(By.XPATH, '//*[@id="user_email"]')
     user_password = driver.find_element(By.XPATH, '//*[@id="user_password"]')
