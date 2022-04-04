@@ -1,5 +1,5 @@
 import time
-from helpers import get_creds
+from helpers import get_creds, send_sms
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -138,6 +138,6 @@ def usa_visa_checker():
 if __name__ == "__main__":
     print("running the program ....")
     messages = usa_visa_checker()
-    # message_id = send_sms(messages)
-    # print(f"SMS id is {message_id}")
+    message_id = send_sms(messages)
+    print(f"SMS id is {message_id}")
     time.sleep(2)
