@@ -1,10 +1,15 @@
+#!/usr/bin/python3
+
 import time
+import logging
 from helpers import get_creds, send_sms
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
+
+logger = logging.getLogger(__name__)
 
 
 def login_to_url(driver):
@@ -136,10 +141,10 @@ def usa_visa_checker():
         return messages_to_be_sent
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == "__main__":
-    print("running the program ....")
+    logger.info("Running US Visa Checker")
     messages = usa_visa_checker()
+    logger.info("VISA appointment check done. Sening SMS")
     message_id = send_sms(messages)
-    print(f"SMS id is {message_id}")
+    logger.info(f"SMS id is {message_id}")
     time.sleep(2)
