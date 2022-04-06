@@ -69,7 +69,8 @@ def usa_visa_checker():
         if not error_notice:
             messages_to_be_sent.update(
                 {
-                    "Montreal": "YAAAYYYY! New slots have opened up in Montreal. OPEN THE WEBSITE NOW AND RESCHEDULE"
+                    "Montreal": "YAAAYYYY! New slots have opened up in Montreal."
+                    "OPEN THE WEBSITE NOW AND RESCHEDULE"
                 }
             )
         else:
@@ -84,7 +85,8 @@ def usa_visa_checker():
         if not error_notice:
             messages_to_be_sent.update(
                 {
-                    "Quebec City": "YAAAYYYY! New slots have opened up in Quebec City. OPEN THE WEBSITE NOW AND RESCHEDULE"
+                    "Quebec City": "YAAAYYYY! New slots have opened up in Quebec City. "
+                    "OPEN THE WEBSITE NOW AND RESCHEDULE"
                 }
             )
         else:
