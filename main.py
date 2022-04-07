@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
 import time
+import os
+from google.cloud import pubsub_v1
+from concurrent.futures import TimeoutError
 import logging
 from helpers import get_creds, send_sms
 from selenium import webdriver
@@ -10,6 +13,21 @@ from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
 
 logger = logging.getLogger(__name__)
+
+project_id = os.environ.get("project_id")
+subscription_id = os.environ.get("subscription_id")
+
+subscriber = pubsub_v1.SubscriberClient()
+subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+
+def callback(message: pubsub_v1.subscriber.message.Message) -> None:
+    logger.info(f"Received {message}.")
+    message.ack()
+
+
+streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
+logger.info(f"Listening for messages on {subscription_path}..\n")
 
 
 def login_to_url(driver):
@@ -141,10 +159,27 @@ def usa_visa_checker():
         return messages_to_be_sent
 
 
+timeout = 5.0
+with subscriber:
+    try:
+        # When `timeout` is not set, result() will block indefinitely,
+        # unless an exception is encountered first.
+        streaming_pull_future.result(timeout=timeout)
+        logger.info("Running US Visa Checker")
+        messages = usa_visa_checker()
+        logger.info("VISA appointment check done. Sending SMS")
+        message_id = send_sms(messages)
+        logger.info(f"SMS id is {message_id}")
+        time.sleep(2)
+    except TimeoutError:
+        streaming_pull_future.cancel()  # Trigger the shutdown.
+        streaming_pull_future.result()  # Block until the shutdown is complete.
+
+
 if __name__ == "__main__":
     logger.info("Running US Visa Checker")
     messages = usa_visa_checker()
-    logger.info("VISA appointment check done. Sening SMS")
+    logger.info("VISA appointment check done. Sending SMS")
     message_id = send_sms(messages)
     logger.info(f"SMS id is {message_id}")
     time.sleep(2)
