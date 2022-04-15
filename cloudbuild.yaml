@@ -11,7 +11,7 @@
    args:
    - 'run'
    - 'deploy'
-   - 'us_visa_checker'
+   - 'us-visa-checker'
    - '--image'
    - 'gcr.io/neat-tube-345320/us_visa_checker:$COMMIT_SHA'
    - '--region'
