@@ -16,7 +16,18 @@ def get_creds():
 
 
 def send_sms(status_dict):
-    message_to_be_sent = f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and here's the update on the most recent run. \n Montreal : {status_dict.get('Montreal')} \n Quebec City : {status_dict.get('Quebec City')} \n Toronto : {status_dict.get('Toronto')}"
+    if isinstance(status_dict, None):
+        append_message = "No slots available in Montreal or Quebec City or Toronto :("
+    else:
+        append_message = (
+            f"Montreal : {status_dict.get('Montreal')} \n Quebec City : {status_dict.get('Quebec City')} "
+            f"\n Toronto : {status_dict.get('Toronto')}"
+        )
+    message_to_be_sent = (
+        f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and "
+        f"here's the update on the most recent run. \n"
+        f" {append_message}"
+    )
     sid = os.environ.get("twilio_sid")
     auth = os.environ.get("twilio_auth")
     from_number = os.environ.get("us_from_number")
