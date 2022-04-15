@@ -40,8 +40,8 @@ def login_to_url(driver):
 
 def usa_visa_checker():
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
     ua = UserAgent(verify_ssl=False)
     user_agent = ua.random
     chrome_options.add_argument(f"user-agent={user_agent}")
