@@ -16,14 +16,7 @@ def get_creds():
 
 
 def send_sms(status_dict):
-    message_to_be_sent = (
-        f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and "
-        "here's the update on the most recent run. \n"
-        f"Montreal : {status_dict.get('Montreal')} \n"
-        f"Quebec City : {status_dict.get('Quebec City')} \n"
-        f"Toronto : {status_dict.get('Toronto')} \n"
-        "40% BTC, 40% ETH, 10% USDC, 10% ADA"
-    )
+    message_to_be_sent = f"Bonjour Dr. Mehak, I am your automated US visa appointment checker and here's the update on the most recent run. \n Montreal : {status_dict.get('Montreal')} \n Quebec City : {status_dict.get('Quebec City')} \n Toronto : {status_dict.get('Toronto')}"
     sid = os.environ.get("twilio_sid")
     auth = os.environ.get("twilio_auth")
     from_number = os.environ.get("us_from_number")
@@ -34,7 +27,3 @@ def send_sms(status_dict):
     )
     logger.info(f"SMS sent with SMS id: {message.sid}")
     return message.sid
-
-
-if __name__ == "__main__":
-    send_sms({"Montreal": "None", "Quebec City": "None", "Toronto": "None"})

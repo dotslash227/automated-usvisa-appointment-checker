@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import time
-from concurrent.futures import TimeoutError
+from flask import Flask
 import logging
 from helpers import get_creds, send_sms
 from selenium import webdriver
@@ -11,6 +11,8 @@ from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
 
 logger = logging.getLogger(__name__)
+
+app = Flask(__name__)
 
 
 def login_to_url(driver):
@@ -38,8 +40,8 @@ def login_to_url(driver):
 
 def usa_visa_checker():
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--no-sandbox")
     ua = UserAgent(verify_ssl=False)
     user_agent = ua.random
     chrome_options.add_argument(f"user-agent={user_agent}")
@@ -141,6 +143,19 @@ def usa_visa_checker():
 
         driver.quit()
         return messages_to_be_sent
+
+
+@app.route("/")
+def run_program():
+    logger.info("Running US Visa Checker")
+    messages = usa_visa_checker()
+    logger.info("VISA appointment check done. Sending SMS")
+    message_id = send_sms(messages)
+    logger.info(f"SMS id is {message_id}")
+    time.sleep(2)
+    return (
+        f"ran succesfully with twilio sms id : {message_id} and statuses : {messages}"
+    )
 
 
 if __name__ == "__main__":
