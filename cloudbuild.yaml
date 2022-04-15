@@ -1,0 +1,20 @@
+ steps:
+ # Build the container image
+ - name: 'gcr.io/cloud-builders/docker'
+   args: ['build', '-t', 'gcr.io/neat-tube-345320/us_visa_checker:$COMMIT_SHA', '.']
+ # Push the container image to Container Registry
+ - name: 'gcr.io/cloud-builders/docker'
+   args: ['push', 'gcr.io/neat-tube-345320/us_visa_checker:$COMMIT_SHA']
+ # Deploy container image to Cloud Run
+ - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+   entrypoint: gcloud
+   args:
+   - 'run'
+   - 'deploy'
+   - 'us_visa_checker'
+   - '--image'
+   - 'gcr.io/neat-tube-345320/us_visa_checker:$COMMIT_SHA'
+   - '--region'
+   - 'us-central1'
+ images:
+ - 'gcr.io/neat-tube-345320/us_visa_checker:$COMMIT_SHA'
