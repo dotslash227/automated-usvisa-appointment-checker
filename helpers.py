@@ -37,4 +37,4 @@ def send_sms(status_dict):
 
 
 if __name__ == "__main__":
-    send_sms({"dict": "dict"})
+    send_sms({"Montreal": "None", "Quebec City": "None", "Toronto": "None"})
