@@ -16,7 +16,7 @@ def get_creds():
 
 
 def send_sms(status_dict):
-    if isinstance(status_dict, None):
+    if status_dict is None:
         append_message = "No slots available in Montreal or Quebec City or Toronto :("
     else:
         append_message = (
