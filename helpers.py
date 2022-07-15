@@ -31,10 +31,13 @@ def send_sms(status_dict):
     sid = os.environ.get("twilio_sid")
     auth = os.environ.get("twilio_auth")
     from_number = os.environ.get("us_from_number")
-    to_number = os.environ.get("us_to_number")
+    to_number_array = os.environ.get("us_to_number").split(",")
     client = Client(sid, auth)
-    message = client.messages.create(
-        body=message_to_be_sent, from_=from_number, to=to_number
-    )
-    logger.info(f"SMS sent with SMS id: {message.sid}")
-    return message.sid
+    sids = []
+    for to_number in to_number_array:
+        message = client.messages.create(
+            body=message_to_be_sent, from_=from_number, to=to_number
+        )
+        logger.info(f"SMS sent with SMS id: {message.sid} to number : {to_number}")
+        sids.append(message.sid)
+    return sids
